@@ -30,6 +30,7 @@ class Model(dict):
         if self._id:
             resp = self.collection.remove({"_id": ObjectId(self._id)})
             self.clear()
+            print(resp)
             return resp
 
 class User(Model):
@@ -44,6 +45,12 @@ class User(Model):
 
     def find_by_name(self, name):
         users = list(self.collection.find({"name": name}))
+        for user in users:
+            user["_id"] = str(user["_id"])
+        return users
+
+    def find_by_name_and_job(self, name, job):
+        users = list(self.collection.find({"job": job, "name": name}))
         for user in users:
             user["_id"] = str(user["_id"])
         return users
